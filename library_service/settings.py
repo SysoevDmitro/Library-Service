@@ -151,8 +151,8 @@ REST_FRAMEWORK = {
 }
 
 SPECTACULAR_SETTINGS = {
-    "TITLE": "Social Media API",
-    "DESCRIPTION": "A platform with core social media functionality.",
+    "TITLE": "Library Service API",
+    "DESCRIPTION": "A platform with core library service functionality.",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
     "SWAGGER_UI_SETTINGS": {
