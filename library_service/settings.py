@@ -46,7 +46,9 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
     "drf_spectacular",
-    'library',
+    'django_filters',
+    'books',
+    'borrowings',
     'user'
 ]
 
@@ -152,7 +154,7 @@ REST_FRAMEWORK = {
 
 SPECTACULAR_SETTINGS = {
     "TITLE": "Library Service API",
-    "DESCRIPTION": "A platform with core library service functionality.",
+    "DESCRIPTION": "A platform with core books service functionality.",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
     "SWAGGER_UI_SETTINGS": {
