@@ -4,19 +4,18 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - "8000:8000"
     volumes:
-      - .app
+      - .:/app
     command: >
       sh -c "python manage.py wait_for_db &&
              python manage.py migrate &&
-             python manage.py runserver 0.0.0.0:8080"
+             python manage.py runserver 0.0.0.0:8000"
     env_file:
       - .env
-    depends_on:
-      - db
+    networks:
+      - library_library
 
   db:
     image: postgres:14-alpine
@@ -24,3 +23,9 @@ services:
       - "5432:5432"
     env_file:
       - .env
+    networks:
+      - library_library
+
+networks:
+  library_library:
+    driver: bridge
