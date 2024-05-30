@@ -1,5 +1,7 @@
 from django.db import models
 from django.conf import settings
+from django.utils import timezone
+from rest_framework.exceptions import ValidationError
 
 
 class Borrowing(models.Model):
@@ -8,6 +10,17 @@ class Borrowing(models.Model):
     actual_return_date = models.DateField(null=True, blank=True)
     book = models.ForeignKey("books.Book", on_delete=models.CASCADE, related_name="borrowings")
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="borrowings")
+
+    class Meta:
+        app_label = "borrowings"
+
+    def return_borrowing(self):
+        if self.actual_return_date:
+            raise ValidationError("This borrowing has already been returned")
+        self.actual_return_date = timezone.now().date()
+        self.book.inventory += 1
+        self.book.save()
+        self.save()
 
     @property
     def is_active(self):

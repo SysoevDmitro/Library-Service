@@ -26,3 +26,9 @@ class BorrowingCreateSerializer(serializers.ModelSerializer):
         user = self.context['request'].user
         borrowing = Borrowing.objects.create(user=user, **validated_data)
         return borrowing
+
+
+class BorrowingReturnSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Borrowing
+        fields = ("id", "actual_return_date")
