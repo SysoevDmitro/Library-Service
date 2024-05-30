@@ -24,10 +24,10 @@ Creating user: /api/user/register/
 Getting access token: /api/user/token/
 
 
-### Features ⭐
-- JWT authentication (with logout function)
-- Admin panel via /admin/
-- Documentation via /api/doc/swagger/
+### Features
+- JWT authentication
+- Admin panel
+- Documentation
 - CRUD operations for books
 - CRUD operations for borrowing
 - Retrieving borrowings by user
