@@ -1,11 +1,13 @@
 # Library service API
 
 API allows to borrow books and return it. Also admins can create them.
+Payments with Stripe
 
 Technologies
 Django Rest Framework,
 Postgres,
-Docker
+Docker,
+Stripe
 
 ## Run with Docker
 Docker must be already installed
