@@ -11,27 +11,49 @@ from .filters import BorrowingFilter
 
 
 class BorrowingViewSet(viewsets.ModelViewSet):
-    queryset = Borrowing.objects.all()
+    queryset = Borrowing.objects.all().select_related("user", "book")
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = [DjangoFilterBackend]
     filterset_class = BorrowingFilter
 
+    @staticmethod
+    def _params_to_ints(qs):
+        return [int(str_id) for str_id in qs.split(",")]
+
+    @staticmethod
+    def _params_to_bool(qs: str) -> bool:
+        return qs.lower() == "true"
+
     def get_serializer_class(self):
-        if self.action == "POST":
+        if self.action in ["create", "update", "partial_update"]:
             return BorrowingCreateSerializer
         return BorrowingReadSerializer
 
     def get_queryset(self):
-        queryset = super().get_queryset()
-        user = self.request.user
-        if user.is_staff:
-            user_id = self.request.query_params.get("user_id")
-            if user_id:
-                queryset = queryset.filter(user_id=user_id)
-        queryset = queryset.filter(user=user)
+        queryset = self.queryset
+
+        user = self.request.query_params.get("user_id")
+        if user:
+            user_ids = self._params_to_ints(user)
+            queryset = queryset.filter(user_id__in=user_ids)
+
+        is_active = self.request.query_params.get("is_active")
+        if is_active is not None:
+            is_active_bool = self._params_to_bool(is_active)
+            if is_active_bool:
+                queryset = queryset.filter(actual_return__isnull=True)
+            else:
+                queryset = queryset.filter(actual_return__isnull=False)
+
+        if not self.request.user.is_staff:
+            queryset = queryset.filter(user=self.request.user)
+
         return queryset
 
     def perform_create(self, serializer):
+        book = serializer.validated_data.get("book")
+        book.inventory -= 1
+        book.save()
         serializer.save(user=self.request.user)
 
     @action(detail=True, methods=["POST"], url_path="return", permission_classes=[permissions.IsAuthenticated])

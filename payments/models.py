@@ -24,4 +24,3 @@ class Payment(models.Model):
 
     def __str__(self):
         return f"Payment {self.id} for borrowing {self.borrowing_id} - {self.status}"
-
