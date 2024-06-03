@@ -11,9 +11,6 @@ class Borrowing(models.Model):
     book = models.ForeignKey("books.Book", on_delete=models.CASCADE, related_name="borrowings")
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="borrowings")
 
-    class Meta:
-        app_label = "borrowings"
-
     def return_borrowing(self):
         if self.actual_return_date:
             raise ValidationError("This borrowing has already been returned")

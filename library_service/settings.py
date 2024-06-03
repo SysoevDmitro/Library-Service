@@ -27,6 +27,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ["SECRET_KEY"]
 
+STRIPE_API_KEY = os.environ["STRIPE_API_KEY"]
+STRIPE_SUCCESS_URL = "https://buy.stripe.com/test_fZe2a3gbZdyI0FicMM"
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -50,6 +53,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     'books',
     'borrowings',
+    'payments',
     'user'
 ]
 

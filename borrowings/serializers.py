@@ -24,7 +24,7 @@ class BorrowingCreateSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = self.context['request'].user
-        borrowing = Borrowing.objects.create(user=user, **validated_data)
+        borrowing = Borrowing.objects.create(**validated_data)
         return borrowing
 
 
